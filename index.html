@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bharat Sahakari</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700&family=Hind:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#132009;
+    --paper:#FBF3DC;
+    --paper2:#FFFDF6;
+    --gold:#F5AC0A;
+    --rust:#E06E06;
+    --leaf:#347A0E;
+    --fade:#7A6C4D;
+    --line:#EAD9A3;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:ui-sans-serif,system-ui,Arial,sans-serif;color:var(--ink);}
+  .serif{font-family:Georgia,'Times New Roman',serif;}
+  h1,h2,h3{margin:0;}
+  p{margin:0;}
+  button{cursor:pointer;font-family:inherit;border:none;}
+  input{font-family:inherit;}
+  .container{max-width:1000px;margin:0 auto;padding:0 20px;}
+  .container-sm{max-width:640px;margin:0 auto;padding:0 20px;}
+
+  /* NAV */
+  .navbar{background:var(--ink);border-bottom:4px solid var(--gold);position:sticky;top:0;z-index:30;}
+  .navbar-inner{max-width:1000px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;}
+  .brand{display:flex;align-items:center;gap:12px;background:none;color:var(--paper2);font-size:24px;font-weight:700;font-family:'Baloo 2','Hind',ui-sans-serif,sans-serif;letter-spacing:0.3px;}
+  .brand img{height:56px;width:56px;border-radius:50%;background:var(--paper2);padding:3px;}
+  .navlinks{display:flex;align-items:center;gap:4px;}
+  .navlinks button{padding:8px 14px;font-size:14px;border-radius:6px;font-weight:600;background:transparent;color:var(--paper2);}
+  .navlinks button.active{background:var(--gold);color:var(--ink);}
+  .nav-cta{background:var(--rust);color:#fff;padding:8px 14px;border-radius:6px;font-weight:700}
+  .signed-in{color:var(--fade);font-size:12px;font-style:italic;margin-left:8px;}
+  .menu-btn{display:none;background:none;color:var(--paper2);font-size:22px;}
+  .mobile-menu{display:none;flex-direction:column;padding:0 20px 12px;gap:4px;}
+  .mobile-menu button{text-align:left;padding:8px 0;background:none;color:var(--paper2);font-size:14px;font-weight:600;}
+  .mobile-menu button.active{color:var(--gold);}
+  @media (max-width:760px){
+    .navlinks{display:none;}
+    .menu-btn{display:block;}
+    .mobile-menu.open{display:flex;}
+  }
+
+  .stamp{display:inline-flex;align-items:center;justify-content:center;border:2px solid var(--rust);color:var(--rust);
+    border-radius:999px;padding:5px 14px;font-size:10px;letter-spacing:1.5px;font-weight:bold;text-transform:uppercase;}
+
+  /* LEDGER */
+  .ledger{background:var(--paper2);border:1px solid var(--line);border-radius:2px;}
+  .ledger-head{display:grid;grid-template-columns:1fr 7fr 4fr;color:var(--fade);font-size:11px;text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid var(--line);padding:8px 16px;}
+  .ledger-row{display:grid;grid-template-columns:1fr 7fr 4fr;align-items:baseline;padding:12px 16px;border-bottom:1px dashed var(--line);}
+  .ledger-row:last-child{border-bottom:none;}
+  .ledger-sl{color:var(--fade);font-size:14px;}
+  .ledger-label{font-size:14px;}
+  .ledger-value{text-align:right;color:var(--rust);font-family:Georgia,serif;font-weight:bold;font-size:18px;}
+
+  /* HERO */
+  .section{padding:64px 20px;}
+  .hero{background:var(--paper);padding-top:64px;padding-bottom:80px;}
+  h1.hero-title{font-family:'Baloo 2',ui-sans-serif,sans-serif;font-size:44px;line-height:1.1;font-weight:700;max-width:640px;margin-top:22px;}
+  .lead{color:var(--fade);font-size:18px;max-width:520px;margin-top:22px;}
+  .btn-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px;}
+  .btn-primary{background:var(--rust);color:#fff;padding:13px 26px;border-radius:2px;font-weight:600;font-size:15px;display:inline-flex;align-items:center;gap:8px;}
+  .btn-outline{border:2px solid var(--ink);color:var(--ink);background:transparent;padding:11px 24px;border-radius:2px;font-weight:600;font-size:15px;}
+  .btn-leaf{background:var(--leaf);color:#fff;padding:11px 20px;border-radius:2px;font-weight:600;font-size:14px;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;}
+  .btn-gold{background:var(--gold);color:#221a12;padding:13px 28px;border-radius:2px;font-weight:600;font-size:15px;display:inline-flex;align-items:center;gap:8px;}
+  .btn-ghost{background:transparent;border:1px solid rgba(34,26,18,0.06);}
+
+  .eyebrow{color:var(--rust);font-size:12px;text-transform:uppercase;letter-spacing:2px;font-weight:bold;}
+  .section h2{font-size:30px;font-weight:bold;margin-top:8px;}
+  .section p.desc{color:var(--fade);margin-top:16px;max-width:640px;}
+
+  .cards-2{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:32px;}
+  .reg-cards{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px;align-items:stretch}
+  .reg-card{background:linear-gradient(180deg,rgba(255,255,255,0.98),var(--paper2));border:1px solid var(--line);border-radius:8px;padding:22px;box-shadow:0 6px 18px rgba(19,32,9,0.04)}
+  .reg-card h3{margin-top:6px;margin-bottom:6px}
+  .reg-card p{color:var(--fade);font-size:14px}
+  @media (max-width:700px){.cards-2{grid-template-columns:1fr;}}
+  .card{background:var(--paper2);border:1px solid var(--line);border-radius:2px;padding:24px;}
+  .card h3{font-size:20px;margin-top:16px;}
+  .card p{color:var(--fade);font-size:14px;margin-top:8px;}
+
+  .cta-dark{background:var(--ink);text-align:center;}
+  .cta-dark h2{color:var(--paper2);}
+
+  /* FORM */
+  .form-card{background:var(--paper2);border:2px dashed var(--line);border-radius:2px;padding:32px;margin-top:28px;}
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  @media (max-width:600px){.form-grid{grid-template-columns:1fr;}}
+  label.field{display:block;margin-bottom:16px;}
+  label.field span{font-size:14px;font-weight:600;display:block;margin-bottom:4px;}
+  input.text-input{width:100%;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:2px;padding:9px 12px;font-size:14px;}
+  .submit-btn{width:100%;background:var(--rust);color:#fff;padding:13px;border-radius:2px;font-weight:600;font-size:15px;margin-top:6px;}
+
+  .center-box{max-width:480px;margin:0 auto;text-align:center;padding:60px 20px;}
+
+  /* COOPS */
+  .coops-header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:16px;}
+  .search-input{width:100%;border:1px solid var(--line);background:#fff;border-radius:2px;padding:11px 16px;font-size:14px;margin-top:24px;}
+  .filters{display:flex;gap:8px;align-items:center;margin-top:12px;flex-wrap:wrap}
+  .filters select{padding:8px 12px;border:1px solid var(--line);border-radius:6px;background:#fff;font-size:14px}
+  .coop-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px;}
+  @media (max-width:700px){.coop-grid{grid-template-columns:1fr;}}
+  .coop-card{background:var(--paper2);border:1px solid var(--line);border-radius:2px;padding:20px;display:flex;flex-direction:column;}
+  .coop-top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start;}
+  .coop-name{font-family:Georgia,serif;font-weight:bold;font-size:17px;line-height:1.3;}
+  .badge-verified{color:var(--leaf);font-size:12px;font-weight:600;white-space:nowrap;}
+  .badge-pending{color:var(--fade);font-size:12px;font-weight:600;white-space:nowrap;}
+  .coop-meta{color:var(--fade);font-size:13px;margin-top:6px;}
+  .coop-footer{border-top:1px dashed var(--line);margin-top:14px;padding-top:12px;display:flex;justify-content:space-between;align-items:center;}
+  .coop-footer .stat{color:var(--fade);font-size:12px;}
+  .btn-join{background:var(--rust);color:#fff;font-size:12px;font-weight:600;padding:7px 14px;border-radius:2px;}
+  .joined-tag{color:var(--leaf);font-size:12px;font-weight:bold;}
+  .msg-box{margin-top:24px;background:#F4E4D9;border:1px solid var(--rust);color:var(--rust);border-radius:2px;padding:12px 16px;font-size:14px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;}
+  .msg-box button{background:var(--rust);color:#fff;font-size:12px;padding:6px 12px;border-radius:2px;font-weight:600;white-space:nowrap;}
+
+  /* MODAL */
+  .modal-overlay{position:fixed;inset:0;background:rgba(51,38,27,0.6);display:flex;align-items:center;justify-content:center;padding:16px;z-index:40;}
+  .modal-box{background:var(--paper2);border-radius:10px;padding:22px;border:1px solid rgba(26,26,26,0.04);max-width:480px;width:100%;position:relative}
+  .modal-close{position:absolute;top:12px;right:12px;background:none;color:var(--fade);font-size:20px;border-radius:6px;padding:6px}
+
+  /* DASHBOARD */
+  .dash-grid{display:grid;grid-template-columns:1fr 2fr;gap:20px;margin-top:32px;}
+  @media (max-width:700px){.dash-grid{grid-template-columns:1fr;}}
+  .profile-card{background:var(--paper2);border:1px solid var(--line);border-radius:2px;padding:20px;height:fit-content;}
+  .profile-card ul{list-style:none;margin:12px 0 0;padding:0;color:var(--fade);font-size:14px;}
+  .profile-card li{margin-bottom:6px;}
+  .coop-list-item{background:var(--paper2);border:1px solid var(--line);border-radius:2px;padding:16px;display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:10px;}
+  .coop-list-item .name{font-weight:600;}
+  .coop-list-item .meta{color:var(--fade);font-size:12px;margin-top:2px;}
+  .leave-btn{color:var(--rust);font-size:12px;font-weight:600;background:none;white-space:nowrap;}
+  .empty-box{background:var(--paper2);border:1px dashed var(--line);border-radius:2px;padding:28px;text-align:center;}
+  .empty-box p{color:var(--fade);font-size:14px;}
+  .dash-title-row{display:flex;justify-content:space-between;align-items:center;}
+  .link-btn{color:var(--rust);font-size:14px;font-weight:600;background:none;}
+
+  /* HERO w/ visual */
+  .hero-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:36px;align-items:center;}
+  .hero-visual{position:relative;border-radius:10px;overflow:hidden;box-shadow:0 18px 40px rgba(19,32,9,0.18);border:1px solid var(--line);aspect-ratio:4/3;}
+  .hero-visual img{width:100%;height:100%;object-fit:cover;object-position:center 40%;display:block;}
+  .hero-visual .tag{position:absolute;left:14px;bottom:14px;background:rgba(19,32,9,0.72);backdrop-filter:blur(2px);color:var(--paper2);font-size:12px;font-weight:600;padding:7px 14px;border-radius:999px;letter-spacing:0.3px;}
+  @media (max-width:820px){
+    .hero-grid{grid-template-columns:1fr;}
+    .hero-visual{aspect-ratio:16/9;order:-1;margin-bottom:8px;}
+  }
+
+  /* ABOUT w/ visual */
+  .about-grid{display:grid;grid-template-columns:1.15fr 0.85fr;gap:36px;align-items:center;}
+  .about-visual{border-radius:10px;overflow:hidden;border:1px solid var(--line);box-shadow:0 10px 26px rgba(19,32,9,0.08);}
+  .about-visual img{width:100%;height:100%;object-fit:cover;display:block;max-height:340px;}
+  @media (max-width:820px){
+    .about-grid{grid-template-columns:1fr;}
+    .about-visual img{max-height:220px;}
+  }
+
+  /* REGISTER PAGE header visual */
+  .register-head{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;}
+  .register-head-visual{width:190px;height:190px;flex:0 0 auto;border-radius:10px;overflow:hidden;border:1px solid var(--line);background:var(--paper2);box-shadow:0 10px 24px rgba(19,32,9,0.08);}
+  .register-head-visual img{width:100%;height:100%;object-fit:contain;display:block;padding:6px;}
+  @media (max-width:700px){ .register-head-visual{display:none;} }
+
+  /* REG CARD images */
+  .reg-card{overflow:hidden;padding:0;display:flex;flex-direction:column;}
+  .reg-card-img{width:100%;height:140px;overflow:hidden;}
+  .reg-card-img img{width:100%;height:100%;object-fit:cover;display:block;}
+  .reg-card-body{padding:20px 22px 22px;}
+  .reg-card-body h3{margin-top:0;}
+
+  /* COOP DIRECTORY banner */
+  .coop-banner{position:relative;border-radius:10px;overflow:hidden;margin-bottom:24px;height:150px;border:1px solid var(--line);}
+  .coop-banner img{width:100%;height:100%;object-fit:cover;object-position:center 30%;display:block;}
+  .coop-banner .overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(19,32,9,0.82) 0%,rgba(19,32,9,0.45) 55%,rgba(19,32,9,0.15) 100%);display:flex;flex-direction:column;justify-content:center;padding:0 26px;}
+  .coop-banner .overlay .stamp{border-color:var(--gold);color:var(--gold);width:fit-content;}
+  .coop-banner .overlay h2{color:var(--paper2);font-size:22px;margin-top:8px;}
+  @media (max-width:600px){ .coop-banner{height:120px;} .coop-banner .overlay h2{font-size:17px;} }
+
+  footer{background:var(--ink);color:var(--fade);padding:44px 20px 26px;text-align:center;font-size:15px;}
+  footer a{color:var(--paper2);text-decoration:none;font-size:15px;line-height:2;display:inline-block;}
+  footer a:hover{color:var(--gold);}
+  .footer-brand-row{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+  .footer-logo{height:52px;width:52px;border-radius:50%;background:var(--paper2);padding:3px;flex:0 0 auto;}
+  .footer-brand-row .name{font-weight:700;font-size:22px;color:var(--paper2);font-family:'Baloo 2','Hind',ui-sans-serif,sans-serif;}
+  .footer-desc{color:var(--fade);font-size:15px;line-height:1.6;}
+  .footer-col-title{font-weight:700;color:var(--paper2);margin-bottom:10px;font-size:16px;letter-spacing:0.2px;}
+  .footer-bottom{margin-top:26px;padding-top:18px;border-top:1px solid rgba(255,255,255,0.08);color:var(--fade);font-size:13px;}
+  @media (max-width:600px){
+    footer{text-align:left;}
+    footer .container{flex-direction:column;align-items:flex-start;}
+    .footer-bottom{text-align:left;}
+  }
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="navbar-inner">
+    <a href="#" class="brand" onclick="go('home');return false;">
+      <img src="images/logo.jpeg" alt="Bharat Sahakari Logo" />
+      Bharat Sahakari
+    </a>
+    <div class="navlinks" id="navlinks"></div>
+    <span class="signed-in" id="signedIn"></span>
+    <button class="menu-btn" aria-label="Toggle menu" onclick="toggleMobileMenu()">☰</button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu"></div>
+</div>
+
+<div id="app"></div>
+
+<footer>
+  <div class="container" style="display:flex;gap:40px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;">
+    <div style="max-width:340px;text-align:left;">
+      <div class="footer-brand-row">
+        <img class="footer-logo" src="images/logo.jpeg" alt="Bharat Sahakari Logo" />
+        <span class="name">Bharat Sahakari</span>
+      </div>
+      <div class="footer-desc">A shared ledger for India's farmer cooperatives. Connect, register, and grow together.</div>
+    </div>
+    <div style="display:flex;gap:44px;flex-wrap:wrap;">
+      <div style="min-width:160px;text-align:left">
+        <div class="footer-col-title">Platform</div>
+        <div><a href="#" onclick="go('coops');return false;">Cooperatives</a></div>
+        <div><a href="#" onclick="go('coops');return false;">Find a Cooperative</a></div>
+        <div><a href="#" onclick="openForm(FARMER_FORM_URL);return false;">Register as Farmer</a></div>
+        <div><a href="#" onclick="openForm(COOPERATIVE_FORM_URL);return false;">Register as Cooperative</a></div>
+      </div>
+      <div style="min-width:160px;text-align:left">
+        <div class="footer-col-title">About</div>
+        <div><a href="#" onclick="go('home');return false;">About</a></div>
+        <div><a href="#" onclick="go('home');return false;">Ecosystem</a></div>
+        <div><a href="#" onclick="go('home');return false;">Impact</a></div>
+      </div>
+    </div>
+  </div>
+  <div class="container footer-bottom">&copy; Bharat Sahakari</div>
+</footer>
+
+<script>
+/* ---------- STATE ---------- */
+let page = "home";
+let farmer = null;
+let memberships = [];
+let coopMsg = "";
+let coopQuery = "";
+let showCreateModal = false;
+let registerJustDone = false;
+let showRegisterModal = false;
+let filterState = "";
+let filterCrop = "";
+let filterVerified = "";
+
+let coops = [
+  { id: 1, name: "Nashik Grape Growers Cooperative", state: "Maharashtra", district: "Nashik", crop: "Grapes & Raisins", members: 1240, since: 2011, verified: true },
+  { id: 2, name: "Anand Milk Producers Union", state: "Gujarat", district: "Anand", crop: "Dairy", members: 3860, since: 1946, verified: true },
+  { id: 3, name: "Coorg Coffee Growers Collective", state: "Karnataka", district: "Kodagu", crop: "Coffee & Pepper", members: 610, since: 1998, verified: true },
+  { id: 4, name: "Malwa Soybean Farmers Society", state: "Madhya Pradesh", district: "Indore", crop: "Soybean", members: 940, since: 2004, verified: true },
+  { id: 5, name: "Krishna Delta Paddy Growers Union", state: "Andhra Pradesh", district: "Krishna", crop: "Paddy & Rice", members: 2150, since: 1988, verified: true },
+  { id: 6, name: "Nagpur Orange Growers Association", state: "Maharashtra", district: "Nagpur", crop: "Citrus", members: 480, since: 2015, verified: false },
+  { id: 7, name: "Punjab Wheat & Basmati Cooperative", state: "Punjab", district: "Ludhiana", crop: "Wheat & Basmati", members: 3020, since: 1972, verified: true },
+  { id: 8, name: "Idukki Spice Growers Cooperative", state: "Kerala", district: "Idukki", crop: "Cardamom & Pepper", members: 705, since: 2001, verified: false },
+];
+
+// Google Form URLs (centralised constants)
+const FARMER_FORM_URL = 'https://forms.gle/HNR6dnxDc6WtugBZ9';
+const COOPERATIVE_FORM_URL = 'https://forms.gle/yXqwQ241rawdpJ6aA';
+const JOIN_COOPERATIVE_FORM_URL = 'https://forms.gle/RkF25z4vLnhtRSmx9';
+
+const services = [
+  { icon: "🛡️", title: "Digital Identity", body: "Every cooperative and every member gets a verified record — the paper trail banks and buyers actually trust." },
+  { icon: "🌱", title: "Farm Advisory", body: "Crop planning, weather alerts, and input procurement guidance, timed to the season, not the calendar year." },
+  { icon: "🚚", title: "Market & Logistics", body: "Warehousing, transport, and buyer connections booked in the same place your harvest gets counted." },
+  { icon: "🏦", title: "Financial Services", body: "Financing, insurance, and payments routed through records your cooperative already keeps." },
+];
+
+const NAV_ITEMS = [
+  { id: "home", label: "Home" },
+  { id: "register", label: "Register" },
+  { id: "coops", label: "Cooperatives" },
+  { id: "dashboard", label: "Dashboard" },
+];
+
+/* ---------- NAV RENDER ---------- */
+function renderNav(){
+  document.getElementById('navlinks').innerHTML = NAV_ITEMS.map(it => {
+    if(it.label === 'Register') return `<button class="nav-cta" onclick="openRegisterModal()">Register</button>`;
+    return `<button class="${page===it.id?'active':''}" onclick="go('${it.id}')">${it.label}</button>`;
+  }).join('') ;
+  document.getElementById('mobileMenu').innerHTML = NAV_ITEMS.map(it =>
+    `<button class="${page===it.id?'active':''}" onclick="${it.label==='Register'?'openRegisterModal()':'go(\''+it.id+'\')'};toggleMobileMenu(true)">${it.label}</button>`
+  ).join('');
+  document.getElementById('signedIn').textContent = farmer ? `Signed in as ${farmer.name.split(' ')[0]}` : '';
+}
+function openRegisterModal(){ showRegisterModal = true; render(); }
+function closeRegisterModal(){ showRegisterModal = false; render(); }
+function toggleMobileMenu(forceClose){
+  const el = document.getElementById('mobileMenu');
+  if(forceClose){ el.classList.remove('open'); return; }
+  el.classList.toggle('open');
+}
+function go(p){
+  page = p;
+  registerJustDone = false;
+  coopMsg = "";
+  render();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function openForm(url){
+  try{ window.open(url, '_blank', 'noopener,noreferrer'); }
+  catch(e){ window.location.href = url; }
+}
+
+/* ---------- PAGE: HOME ---------- */
+function renderHome(){
+  return `
+  <section class="hero">
+    <div class="container">
+      <div class="hero-grid">
+        <div>
+          <span class="stamp">Cooperative Network</span>
+          <h1 class="hero-title serif">Digital cooperative ecosystem for India</h1>
+          <p class="lead">Bharat Sahakari is a shared digital ledger for India's farmer cooperatives — register, find cooperatives, and join a community that supports your harvest and livelihood.</p>
+          <div class="btn-row">
+            <button class="btn-primary" onclick="openForm(FARMER_FORM_URL)">Register as Farmer</button>
+            <button class="btn-outline" onclick="openForm(COOPERATIVE_FORM_URL)">Register as Cooperative</button>
+            <button class="btn-leaf" onclick="go('coops')">Find a cooperative</button>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <img src="images/hero-field.jpeg" alt="Farmers working their fields at sunrise" />
+          <span class="tag">🌾 Farmers, at work across India</span>
+        </div>
+      </div>
+      <div style="max-width:560px;margin-top:56px;">
+        <div class="ledger">
+          <div class="ledger-head"><div>Sl.</div><div>Particulars</div><div style="text-align:right;">Figures</div></div>
+          ${ledgerRow(1,"Cooperatives on the network","25,000+")}
+          ${ledgerRow(2,"Farmers connected","10M+")}
+          ${ledgerRow(3,"Buyers &amp; institutional partners","15,000+")}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="background:var(--paper2);">
+    <div class="container">
+      <div class="about-grid">
+        <div>
+          <p class="eyebrow">Who we are</p>
+          <h2 class="serif" style="max-width:640px;">Cooperatives built the trust. We're building the record of it.</h2>
+          <p class="desc">Most farmer cooperatives in India run on paper registers, word of mouth, and years of local trust — but that trust rarely travels beyond the village. Bharat Sahakari digitises that record so a cooperative's history, its members, and its dealings can be verified anywhere: by a bank, a buyer, or a government scheme.</p>
+        </div>
+        <div class="about-visual">
+          <img src="images/community.jpeg" alt="A cooperative of farmers standing together in their fields" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="background:var(--paper);">
+    <div class="container">
+      <p class="eyebrow">What we do</p>
+      <h2 class="serif">Four services, one ledger</h2>
+      <div class="cards-2">
+        ${services.map(s => `
+          <div class="card">
+            <div style="font-size:26px;">${s.icon}</div>
+            <h3 class="serif">${s.title}</h3>
+            <p>${s.body}</p>
+          </div>`).join('')}
+      </div>
+      <div style="margin-top:28px;">
+        <div class="eyebrow">Quick Actions</div>
+        <div class="reg-cards">
+          <div class="reg-card">
+            <div class="reg-card-img"><img src="images/hero-field.jpeg" alt="Farmer at work in the field" /></div>
+            <div class="reg-card-body">
+              <div style="font-size:22px;">👨‍🌾</div>
+              <h3>Register as Farmer</h3>
+              <p>Open the official farmer registration form to join the Bharat Sahakari network.</p>
+              <div style="margin-top:12px;"><button class="btn-primary" onclick="openForm(FARMER_FORM_URL)">Register as Farmer</button></div>
+            </div>
+          </div>
+          <div class="reg-card">
+            <div class="reg-card-img"><img src="images/community.jpeg" alt="A cooperative of farmers standing together" /></div>
+            <div class="reg-card-body">
+              <div style="font-size:22px;">🏛</div>
+              <h3>Register a Cooperative</h3>
+              <p>Submit your cooperative for review and inclusion in the network.</p>
+              <div style="margin-top:12px;"><button class="btn-outline" onclick="openForm(COOPERATIVE_FORM_URL)">Register Cooperative</button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section cta-dark">
+    <div class="container">
+      <h2 class="serif">Find your cooperative, or start one.</h2>
+      <button class="btn-gold" style="margin-top:24px;" onclick="go('coops')">Go to cooperatives →</button>
+    </div>
+  </section>
+  `;
+}
+function ledgerRow(n,label,value){
+  return `<div class="ledger-row"><div class="ledger-sl">${n}</div><div class="ledger-label">${label}</div><div class="ledger-value">${value}</div></div>`;
+}
+
+/* ---------- PAGE: REGISTER ---------- */
+function renderRegister(){
+  if(farmer && !registerJustDone){
+    return `
+    <div class="section" style="background:var(--paper);min-height:60vh;">
+      <div class="center-box">
+        <div style="font-size:34px;">✅</div>
+        <h2 class="serif" style="font-size:26px;margin-top:14px;">You're already registered, ${farmer.name.split(' ')[0]}.</h2>
+        <p style="color:var(--fade);margin-top:10px;">Head to your dashboard, or browse cooperatives to join one.</p>
+        <div class="btn-row" style="justify-content:center;">
+          <button class="btn-primary" onclick="go('dashboard')">Dashboard</button>
+          <button class="btn-outline" onclick="go('coops')">Cooperatives</button>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  if(registerJustDone){
+    return `
+    <div class="section" style="background:var(--paper);min-height:60vh;">
+      <div class="center-box">
+        <span class="stamp">Registered</span>
+        <h2 class="serif" style="font-size:26px;margin-top:14px;">Welcome, ${farmer.name.split(' ')[0]}.</h2>
+        <p style="color:var(--fade);margin-top:10px;">Your farmer profile is now on record. Next, find a cooperative to join — or start your own.</p>
+        <div class="btn-row" style="justify-content:center;">
+          <button class="btn-primary" onclick="go('coops')">Continue to cooperatives →</button>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  return `
+  <div class="section" style="background:var(--paper);min-height:60vh;">
+    <div class="container">
+      <div class="register-head">
+        <div>
+          <span class="stamp">Join Bharat Sahakari</span>
+          <h2 class="serif" style="font-size:26px;margin-top:12px;">Register or find a cooperative</h2>
+          <p style="color:var(--fade);margin-top:6px;max-width:640px;">Choose a path to join the Bharat Sahakari network. Farmer and Cooperative registration use official Google Forms.</p>
+        </div>
+        <div class="register-head-visual">
+          <img src="images/india-network.jpeg" alt="Farmers harvesting across the map of India" />
+        </div>
+      </div>
+
+      <div class="reg-cards" style="margin-top:18px;">
+        <div class="reg-card">
+          <div class="reg-card-img"><img src="images/hero-field.jpeg" alt="Farmer at work in the field" /></div>
+          <div class="reg-card-body">
+            <div style="font-size:22px;">👨‍🌾</div>
+            <h3>Farmer</h3>
+            <p>Register as a farmer to open your passbook and join cooperatives.</p>
+            <div style="margin-top:12px;"><button class="btn-primary" onclick="openForm(FARMER_FORM_URL)">Register as Farmer</button></div>
+          </div>
+        </div>
+
+        <div class="reg-card">
+          <div class="reg-card-img"><img src="images/community.jpeg" alt="A cooperative of farmers standing together" /></div>
+          <div class="reg-card-body">
+            <div style="font-size:22px;">🏢</div>
+            <h3>Cooperative</h3>
+            <p>Submit your cooperative's details for review and inclusion.</p>
+            <div style="margin-top:12px;"><button class="btn-outline" onclick="openForm(COOPERATIVE_FORM_URL)">Register Cooperative</button></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:22px;max-width:640px;">
+        <div class="form-card" style="text-align:center;">
+          <p style="color:var(--fade);margin-bottom:12px;">Or create a quick local profile to explore the dashboard (stored only in your browser session).</p>
+          <form onsubmit="submitRegister(event)">
+            <div class="form-grid">
+              ${field('reg-name','Full name','text','e.g. Ram Kumar',true)}
+              ${field('reg-phone','Phone number','tel','e.g. +91 98xxxx',true)}
+              ${field('reg-state','State','text','e.g. Maharashtra',true)}
+              ${field('reg-district','District','text','e.g. Nashik',false)}
+            </div>
+            <div style="margin-top:12px;display:flex;gap:8px;">
+              <input class="submit-btn" type="submit" value="Create local profile" />
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+function field(id,label,type,placeholder,required){
+  return `<label class="field"><span>${label}</span><input class="text-input" id="${id}" type="${type}" placeholder="${placeholder||''}" ${required?'required':''} /></label>`;
+}
+function submitRegister(e){
+  e.preventDefault();
+  const name = document.getElementById('reg-name').value;
+  const phone = document.getElementById('reg-phone').value;
+  const state = document.getElementById('reg-state').value;
+  if(!name || !phone || !state) return;
+  farmer = {
+    name, phone, state,
+    village: document.getElementById('reg-village') ? document.getElementById('reg-village').value : '',
+    district: document.getElementById('reg-district') ? document.getElementById('reg-district').value : '',
+    land: document.getElementById('reg-land') ? document.getElementById('reg-land').value : '',
+    crop: document.getElementById('reg-crop') ? document.getElementById('reg-crop').value : '',
+  };
+  registerJustDone = true;
+  render();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+/* ---------- PAGE: COOPS ---------- */
+function renderCoops(){
+  // build dynamic filter lists
+  const states = Array.from(new Set(coops.map(c=>c.state))).sort();
+  const crops = Array.from(new Set(coops.map(c=>c.crop))).sort();
+  const filtered = coops.filter(c => {
+    if(coopQuery && !(c.name+c.state+c.district+c.crop).toLowerCase().includes(coopQuery.toLowerCase())) return false;
+    if(filterState && c.state !== filterState) return false;
+    if(filterCrop && c.crop !== filterCrop) return false;
+    if(filterVerified){
+      if(filterVerified==='verified' && !c.verified) return false;
+      if(filterVerified==='pending' && c.verified) return false;
+    }
+    return true;
+  });
+  return `
+  <div class="section" style="background:var(--paper);min-height:60vh;">
+    <div class="container">
+      <div class="coop-banner">
+        <img src="images/community.jpeg" alt="Members of a farmer cooperative" />
+        <div class="overlay">
+          <span class="stamp">Cooperative Directory</span>
+          <h2 class="serif">One network, thousands of cooperatives</h2>
+        </div>
+      </div>
+      <div class="coops-header">
+        <div>
+          <span class="stamp">Cooperative Register</span>
+          <h1 class="serif" style="font-size:30px;margin-top:16px;">Find a cooperative, or start your own</h1>
+          <p style="color:var(--fade);margin-top:8px;font-size:14px;max-width:520px;">Browse existing cooperatives across states and crops, or register a new one if yours isn't listed yet.</p>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center;">
+          <button class="btn-ghost" onclick="openCreateModal()">+ Create new cooperative</button>
+          <button class="btn-leaf" onclick="go('dashboard')">My Dashboard</button>
+        </div>
+      </div>
+
+      ${coopMsg ? `
+      <div class="msg-box">
+        <span>${coopMsg}</span>
+        <button onclick="go('register')">Register now</button>
+      </div>` : ''}
+
+      <input class="search-input" placeholder="Search by name, state, district, or crop..." value="${coopQuery}" oninput="onCoopSearch(this.value)" aria-label="Search cooperatives" />
+      <div class="filters">
+        <select onchange="onFilterChange('state',this.value)"><option value="">All states</option>${states.map(s=>`<option ${filterState===s?'selected':''} value="${s}">${s}</option>`).join('')}</select>
+        <select onchange="onFilterChange('crop',this.value)"><option value="">All crops</option>${crops.map(s=>`<option ${filterCrop===s?'selected':''} value="${s}">${s}</option>`).join('')}</select>
+        <select onchange="onFilterChange('verified',this.value)"><option value="">Any status</option><option value="verified" ${filterVerified==='verified'?'selected':''}>Verified</option><option value="pending" ${filterVerified==='pending'?'selected':''}>Pending</option></select>
+        <button class="btn-outline" onclick="clearFilters()">Clear</button>
+      </div>
+
+      <div class="coop-grid">
+        ${filtered.map(c => renderCoopCard(c)).join('')}
+      </div>
+    </div>
+  </div>
+  ${showCreateModal ? renderCreateModal() : ''}
+  `;
+}
+
+function onFilterChange(which,val){
+  if(which==='state') filterState = val;
+  if(which==='crop') filterCrop = val;
+  if(which==='verified') filterVerified = val;
+  renderCoopListOnly();
+}
+function clearFilters(){ filterState=''; filterCrop=''; filterVerified=''; renderCoopListOnly(); }
+function renderCoopCard(c){
+  const joined = memberships.includes(c.id);
+  return `
+  <div class="coop-card">
+    <div class="coop-top">
+      <div class="coop-name serif">${c.name}</div>
+      ${c.verified ? `<span class="badge-verified">🛡️ Verified</span>` : `<span class="badge-pending">Pending</span>`}
+    </div>
+    <p class="coop-meta">📍 ${c.district}, ${c.state}</p>
+    <p class="coop-meta">Focus: ${c.crop}</p>
+    <div class="coop-footer">
+      <span class="stat">${c.members.toLocaleString()} members · since ${c.since}</span>
+      ${joined ? `<span class="joined-tag">✓ Joined</span>` : `<button class="btn-join" onclick="joinCoop(${c.id})">Join</button>`}
+    </div>
+  </div>`;
+}
+function onCoopSearch(v){ coopQuery = v; renderCoopListOnly(); }
+function renderCoopListOnly(){
+  // re-render whole coops page (cheap enough) but keep focus by re-render then refocus search
+  render();
+  const input = document.querySelector('.search-input');
+  if(input){ input.focus(); input.setSelectionRange(input.value.length, input.value.length); }
+}
+function joinCoop(id){
+  if(!farmer){
+    coopMsg = "Please register as a farmer before joining a cooperative.";
+    render();
+    return;
+  }
+  // Open the join cooperative Google Form in a new tab.
+  openForm(JOIN_COOPERATIVE_FORM_URL);
+}
+function openCreateModal(){ showCreateModal = true; render(); }
+function closeCreateModal(){ showCreateModal = false; render(); }
+function renderCreateModal(){
+  return `
+  <div class="modal-overlay" onclick="if(event.target===this) closeCreateModal()">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeCreateModal()">✕</button>
+      <span class="stamp">Cooperative Registration</span>
+      <h3 class="serif" style="font-size:20px;margin-top:12px;">Register your cooperative</h3>
+      <p style="color:var(--fade);margin-top:6px;font-size:14px;">Use the official registration form to submit your cooperative for review. The form will open in a new tab.</p>
+      <div style="margin-top:18px;text-align:center;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+        <button class="submit-btn" onclick="openForm(COOPERATIVE_FORM_URL)">Register Cooperative</button>
+        <button class="btn-outline" onclick="openForm(FARMER_FORM_URL)">Register Farmer</button>
+      </div>
+    </div>
+  </div>`;
+}
+function submitCreateCoop(e){
+  e.preventDefault();
+  const name = document.getElementById('coop-name').value;
+  const state = document.getElementById('coop-state').value;
+  if(!name || !state) return;
+  const newCoop = {
+    id: Date.now(),
+    name, state,
+    district: document.getElementById('coop-district').value || "—",
+    crop: document.getElementById('coop-crop').value || "General",
+    members: 1,
+    since: new Date().getFullYear(),
+    verified: false,
+  };
+  coops.unshift(newCoop);
+  if(farmer) memberships.push(newCoop.id);
+  showCreateModal = false;
+  render();
+}
+
+/* ---------- PAGE: DASHBOARD ---------- */
+function renderDashboard(){
+  if(!farmer){
+    return `
+    <div class="section" style="background:var(--paper);min-height:60vh;">
+      <div class="center-box">
+        <div style="font-size:34px;">📖</div>
+        <h2 class="serif" style="font-size:26px;margin-top:14px;">No passbook yet</h2>
+        <p style="color:var(--fade);margin-top:8px;">Register as a farmer to open your dashboard.</p>
+        <button class="btn-primary" style="margin-top:20px;" onclick="go('register')">Register now</button>
+      </div>
+    </div>`;
+  }
+  const myCoops = coops.filter(c => memberships.includes(c.id));
+  return `
+  <div class="section" style="background:var(--paper);min-height:60vh;">
+    <div class="container" style="max-width:880px;">
+      <span class="stamp">Farmer Passbook</span>
+      <h1 class="serif" style="font-size:30px;margin-top:16px;">${farmer.name}'s dashboard</h1>
+
+      <div class="dash-grid">
+        <div class="profile-card">
+          <div style="font-size:22px;">📋</div>
+          <h3 class="serif" style="margin-top:10px;">Profile</h3>
+          <ul>
+            <li>📞 ${farmer.phone}</li>
+            <li>📍 ${[farmer.village, farmer.district, farmer.state].filter(Boolean).join(', ')}</li>
+            ${farmer.land ? `<li>Land: ${farmer.land} acres</li>` : ''}
+            ${farmer.crop ? `<li>Primary crop: ${farmer.crop}</li>` : ''}
+          </ul>
+        </div>
+
+        <div>
+          <div class="dash-title-row">
+            <h3 class="serif" style="font-size:20px;">Cooperatives you're part of (${myCoops.length})</h3>
+            <button class="link-btn" onclick="go('coops')">Join more →</button>
+          </div>
+
+          ${myCoops.length === 0 ? `
+          <div class="empty-box" style="margin-top:14px;">
+            <p>You haven't joined any cooperative yet.</p>
+            <button class="btn-primary" style="margin-top:12px;" onclick="go('coops')">Browse cooperatives</button>
+          </div>` : `
+          <div style="margin-top:14px;">
+            ${myCoops.map(c => `
+              <div class="coop-list-item">
+                <div>
+                  <div class="name">${c.name}</div>
+                  <div class="meta">${c.district}, ${c.state} · ${c.crop}</div>
+                </div>
+                <button class="leave-btn" onclick="leaveCoop(${c.id})">🗑 Leave</button>
+              </div>`).join('')}
+          </div>`}
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+function leaveCoop(id){
+  memberships = memberships.filter(m => m !== id);
+  render();
+}
+
+/* ---------- MASTER RENDER ---------- */
+function render(){
+  renderNav();
+  const app = document.getElementById('app');
+  if(page === 'home') app.innerHTML = renderHome();
+  else if(page === 'register') app.innerHTML = renderRegister();
+  else if(page === 'coops') app.innerHTML = renderCoops();
+  else if(page === 'dashboard') app.innerHTML = renderDashboard();
+  // ensure only one modal overlay exists at a time
+  document.querySelectorAll('.modal-overlay').forEach(n=>n.remove());
+  if(showCreateModal) document.body.insertAdjacentHTML('beforeend', renderCreateModal());
+  if(showRegisterModal) document.body.insertAdjacentHTML('beforeend', renderRegisterModal());
+}
+
+function renderRegisterModal(){
+  if(!showRegisterModal) return '';
+  return `
+  <div class="modal-overlay" onclick="if(event.target===this) closeRegisterModal()">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeRegisterModal()">✕</button>
+      <span class="stamp">Register</span>
+      <h3 class="serif" style="font-size:20px;margin-top:10px;">Join Bharat Sahakari</h3>
+      <p style="color:var(--fade);margin-top:6px;font-size:14px;">Choose how you'd like to join the network.</p>
+      <div style="margin-top:14px;display:flex;gap:10px;flex-direction:column;">
+        <button class="btn-primary" onclick="openForm(FARMER_FORM_URL)">Register as Farmer</button>
+        <button class="btn-outline" onclick="openForm(COOPERATIVE_FORM_URL)">Register as Cooperative</button>
+      </div>
+    </div>
+  </div>`;
+}
+render();
+</script>
+</body>
+</html>
