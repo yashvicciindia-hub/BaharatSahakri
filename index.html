@@ -194,6 +194,168 @@
     footer .container{flex-direction:column;align-items:flex-start;}
     .footer-bottom{text-align:left;}
   }
+
+  /* ===== BHARAT SAHAKARI APK DOWNLOAD CTA ===== */
+  /* All selectors prefixed with .bsapk- to avoid any style leakage */
+  .bsapk-fab {
+    position: fixed;
+    right: 0;
+    bottom: 88px;
+    z-index: 35;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    /* No text-decoration since it's an anchor */
+    text-decoration: none;
+    /* Expand from right; button grows leftward */
+    direction: rtl;
+  }
+  .bsapk-inner {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    background: linear-gradient(135deg, #347A0E 0%, #245C08 100%);
+    color: #fff;
+    border-radius: 50px 0 0 50px;
+    box-shadow: -3px 4px 20px rgba(19,32,9,0.28), 0 2px 8px rgba(52,122,14,0.25);
+    padding: 0;
+    overflow: hidden;
+    /* Width transitions for expand effect */
+    max-width: 52px;
+    transition: max-width 0.38s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.25s ease,
+                background 0.25s ease;
+    direction: ltr;
+    cursor: pointer;
+    border: 2px solid rgba(245,172,10,0.35);
+    border-right: none;
+    white-space: nowrap;
+  }
+  /* Icon pill always visible */
+  .bsapk-icon {
+    flex: 0 0 48px;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    line-height: 1;
+    /* Slight rotation on hover handled below */
+    transition: transform 0.25s ease;
+  }
+  /* Text label hidden until expanded */
+  .bsapk-label {
+    font-family: 'Baloo 2','Hind',ui-sans-serif,sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    color: #fff;
+    padding-right: 16px;
+    padding-left: 2px;
+    opacity: 0;
+    transform: translateX(8px);
+    transition: opacity 0.25s ease 0.08s, transform 0.28s ease 0.06s;
+    line-height: 1.25;
+    max-width: 180px;
+    white-space: nowrap;
+  }
+  /* Hover / Focus expand */
+  .bsapk-fab:hover .bsapk-inner,
+  .bsapk-fab:focus-visible .bsapk-inner,
+  .bsapk-fab:focus-within .bsapk-inner {
+    max-width: 260px;
+    background: linear-gradient(135deg, #3d8f10 0%, #2d7009 100%);
+    box-shadow: -4px 6px 28px rgba(19,32,9,0.35), 0 2px 12px rgba(52,122,14,0.35);
+  }
+  .bsapk-fab:hover .bsapk-label,
+  .bsapk-fab:focus-visible .bsapk-label,
+  .bsapk-fab:focus-within .bsapk-label {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  .bsapk-fab:hover .bsapk-icon,
+  .bsapk-fab:focus-visible .bsapk-icon {
+    transform: scale(1.12);
+  }
+  /* Keyboard focus outline */
+  .bsapk-fab:focus-visible {
+    outline: 3px solid #F5AC0A;
+    outline-offset: 2px;
+    border-radius: 50px 0 0 50px;
+  }
+  /* Active / pressed state */
+  .bsapk-fab:active .bsapk-inner {
+    background: linear-gradient(135deg, #245C08 0%, #1a4506 100%);
+    transform: scale(0.97);
+  }
+  /* Gold accent stripe on icon */
+  .bsapk-icon-wrap {
+    position: relative;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .bsapk-icon-wrap::before {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 2px;
+    height: 60%;
+    background: rgba(245,172,10,0.5);
+    border-radius: 1px;
+    transition: opacity 0.25s;
+  }
+  .bsapk-fab:hover .bsapk-icon-wrap::before,
+  .bsapk-fab:focus-within .bsapk-icon-wrap::before {
+    opacity: 0;
+  }
+  /* Tooltip for screen-readers / non-hover fallback */
+  .bsapk-fab[title]:hover::after {
+    display: none; /* label text is already shown; no need for native tooltip */
+  }
+  /* ── Mobile adjustments ── */
+  @media (max-width: 768px) {
+    .bsapk-fab {
+      bottom: 76px;
+    }
+    /* On touch devices, show a peek of the label always */
+    .bsapk-inner {
+      max-width: 52px;
+    }
+  }
+  @media (max-width: 480px) {
+    .bsapk-fab {
+      bottom: 68px;
+    }
+    .bsapk-icon {
+      width: 44px;
+      height: 44px;
+      flex: 0 0 44px;
+      font-size: 20px;
+    }
+    .bsapk-icon-wrap {
+      width: 44px;
+      height: 44px;
+    }
+    .bsapk-inner {
+      border-radius: 44px 0 0 44px;
+    }
+    .bsapk-fab:focus-visible {
+      border-radius: 44px 0 0 44px;
+    }
+  }
+  @media (max-width: 375px) {
+    .bsapk-label {
+      font-size: 12px;
+      max-width: 150px;
+    }
+  }
+  /* ===== END BHARAT SAHAKARI APK DOWNLOAD CTA ===== */
 </style>
 </head>
 <body>
@@ -240,6 +402,30 @@
   </div>
   <div class="container footer-bottom">&copy; Bharat Sahakari</div>
 </footer>
+
+<!-- BharatSahakariAppDownloadCTA — mounted once in the shared layout, visible across all pages -->
+<a id="bsapk-fab"
+   class="bsapk-fab"
+   href="/BharatSahakari.apk"
+   download="BharatSahakari.apk"
+   aria-label="Download Bharat Sahakari Android App"
+   title="Download Bharat Sahakari App"
+   role="link">
+  <div class="bsapk-inner">
+    <div class="bsapk-icon-wrap">
+      <div class="bsapk-icon" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <!-- Android robot head -->
+          <path d="M6.18 15.64a2.18 2.18 0 0 1-2.18-2.18V9.91a2.18 2.18 0 0 1 4.36 0v3.55a2.18 2.18 0 0 1-2.18 2.18zm11.64 0a2.18 2.18 0 0 1-2.18-2.18V9.91a2.18 2.18 0 0 1 4.36 0v3.55a2.18 2.18 0 0 1-2.18 2.18zM12 2.5l1.3-2.25.87.5L12.87 3h-.75L11.83.75l.87-.5L14 2.5H12z"/>
+          <!-- Simplified download arrow + device shape -->
+          <rect x="5" y="7" width="14" height="10" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.4"/>
+          <path d="M12 10v4m0 0-2-2m2 2 2-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+      </div>
+    </div>
+    <span class="bsapk-label">Download&nbsp;App</span>
+  </div>
+</a>
 
 <script>
 /* ---------- STATE ---------- */
@@ -750,6 +936,41 @@ function renderRegisterModal(){
   </div>`;
 }
 render();
+
+/* ===== BharatSahakariAppDownloadCTA: touch support ===== */
+(function(){
+  var fab = document.getElementById('bsapk-fab');
+  if(!fab) return;
+  var inner = fab.querySelector('.bsapk-inner');
+  var label = fab.querySelector('.bsapk-label');
+  var expanded = false;
+  function expand(){
+    if(expanded) return;
+    expanded = true;
+    inner.style.maxWidth = '260px';
+    label.style.opacity = '1';
+    label.style.transform = 'translateX(0)';
+  }
+  function collapse(){
+    expanded = false;
+    inner.style.maxWidth = '';
+    label.style.opacity = '';
+    label.style.transform = '';
+  }
+  // Touch: first tap expands, second tap navigates (download)
+  fab.addEventListener('touchstart', function(e){
+    if(!expanded){
+      e.preventDefault();
+      expand();
+      // auto-collapse after 3.5s if user doesn't act
+      setTimeout(function(){ if(expanded) collapse(); }, 3500);
+    }
+    // if already expanded, allow default (follow the href download)
+  }, { passive: false });
+  document.addEventListener('touchstart', function(e){
+    if(expanded && !fab.contains(e.target)) collapse();
+  }, { passive: true });
+})();
 </script>
 </body>
 </html>
